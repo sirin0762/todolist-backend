@@ -31,10 +31,6 @@ public class TodoResponse {
 
     private LocalDate endDate;
 
-    private LocalTime startTime;
-
-    private LocalTime endTime;
-
     public static TodoResponse from(TodoEntity todoEntity) {
         return new TodoResponse(
             todoEntity.getId(),
@@ -43,9 +39,7 @@ public class TodoResponse {
             todoEntity.getTodoTimeOfDay(),
             todoEntity.isDone(),
             todoEntity.getStartDate(),
-            todoEntity.getEndDate(),
-            todoEntity.getStartTime(),
-            todoEntity.getEndTime()
+            todoEntity.getEndDate()
         );
     }
 

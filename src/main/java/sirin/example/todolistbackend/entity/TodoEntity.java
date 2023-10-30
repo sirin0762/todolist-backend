@@ -42,8 +42,4 @@ public class TodoEntity extends BaseEntity{
 
     private LocalDate endDate;
 
-    private LocalTime startTime;
-
-    private LocalTime endTime;
-
 }
