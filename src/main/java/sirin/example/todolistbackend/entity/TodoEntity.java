@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sirin.example.todolistbackend.entity.dto.TodoResponse;
 import sirin.example.todolistbackend.entity.type.TodoTimeOfDay;
 
 import java.time.LocalDate;
@@ -41,5 +42,14 @@ public class TodoEntity extends BaseEntity{
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    public void update(TodoResponse requestTodo) {
+        this.title = requestTodo.getTitle();
+        this.description = requestTodo.getDesc();
+        this.todoTimeOfDay = requestTodo.getTodoTimeOfDay();
+        this.done = requestTodo.isDone();
+        this.startDate = requestTodo.getStartDate();
+        this.endDate = requestTodo.getEndDate();
+    }
 
 }
