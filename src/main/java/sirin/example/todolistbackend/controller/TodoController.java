@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sirin.example.todolistbackend.entity.dto.TodoCreateRequest;
 import sirin.example.todolistbackend.entity.dto.TodoListOnDayResponse;
 import sirin.example.todolistbackend.entity.dto.TodoResponse;
 import sirin.example.todolistbackend.service.TodoService;
@@ -29,6 +30,12 @@ public class TodoController {
     @GetMapping
     public ResponseEntity<List<TodoListOnDayResponse>> getTodoListOnOneDay(@RequestParam(name = "date") LocalDate date) {
         return ResponseEntity.ok(todoService.getTodoListOnOneDay(date));
+    }
+
+    @PostMapping
+    public ResponseEntity<String> createTodo(@RequestBody TodoCreateRequest request) {
+        Long id = todoService.createTodo(request);
+        return ResponseEntity.ok(id.toString());
     }
 
     @PutMapping("/{id}")

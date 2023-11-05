@@ -43,6 +43,15 @@ public class TodoEntity extends BaseEntity{
 
     private LocalDate endDate;
 
+    public TodoEntity(String title, String description, TodoTimeOfDay todoTimeOfDay, boolean done, LocalDate startDate, LocalDate endDate) {
+        this.title = title;
+        this.description = description;
+        this.todoTimeOfDay = todoTimeOfDay;
+        this.done = done;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public void update(TodoResponse requestTodo) {
         this.title = requestTodo.getTitle();
         this.description = requestTodo.getDesc();
