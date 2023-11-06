@@ -3,6 +3,7 @@ package sirin.example.todolistbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,14 @@ public class TodoController {
         @RequestBody TodoResponse todo
     ) {
         todoService.updateTodo(id, todo);
+        return ResponseEntity.ok("");
+    }
+
+    @DeleteMapping("/{id}")
+    // join line : ctrl + shift + j
+    public ResponseEntity<String> deleteTodo(@PathVariable(value = "id") Long id
+    ) {
+        todoService.deleteTodo(id);
         return ResponseEntity.ok("");
     }
 

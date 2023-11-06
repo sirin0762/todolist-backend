@@ -46,4 +46,9 @@ public class TodoService {
         todoRepository.save(todo);
     }
 
+    @Transactional
+    public void deleteTodo(Long id) {
+        todoRepository.deleteById(id);
+    }
+
 }
