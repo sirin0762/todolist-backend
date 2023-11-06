@@ -11,6 +11,9 @@ import sirin.example.todolistbackend.entity.type.TodoTimeOfDay;
 import sirin.example.todolistbackend.repository.TodoRepository;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,11 +26,20 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public List<TodoListOnDayResponse> getTodoListOnOneDay(LocalDate date) {
-        Map<TodoTimeOfDay, List<TodoResponse>> todoMaps = todoRepository.findByStartDate(date).stream().map(TodoResponse::from)
-            .collect(Collectors.groupingBy(TodoResponse::getTodoTimeOfDay));
+        Map<TodoTimeOfDay, List<TodoResponse>> todoMaps = Arrays.stream(TodoTimeOfDay.values())
+            .collect(Collectors.toMap(
+                timeOfDay -> timeOfDay,
+                timeOfDay -> todoRepository.findByStartDate(date).stream()
+                    .map(TodoResponse::from)
+                    .filter(todoResponse -> todoResponse.getTodoTimeOfDay() == timeOfDay)
+                    .collect(Collectors.toList()),
+                (list1, list2) -> list1,
+                HashMap::new
+            ));
 
         return todoMaps.entrySet().stream()
             .map(entry -> TodoListOnDayResponse.of(entry.getKey(), entry.getValue()))
+            .sorted(Comparator.comparing(TodoListOnDayResponse::getTodoTimeOfDay))
             .toList();
     }
 
@@ -39,7 +51,7 @@ public class TodoService {
 
     @Transactional
     public void updateTodo(Long id, TodoResponse requestTodo) {
-        TodoEntity todo  = todoRepository.findById(id)
+        TodoEntity todo = todoRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Todo입니다."));
 
         todo.update(requestTodo);
