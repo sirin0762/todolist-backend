@@ -1,9 +1,14 @@
 spring:
+
   jpa:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
+
   sql:
     init:
       platform: mysql
       mode: always
+
+  profiles:
+    include: oauth

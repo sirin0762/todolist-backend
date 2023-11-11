@@ -1,12 +1,16 @@
 package sirin.example.todolistbackend.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sirin.example.todolistbackend.entity.type.Role;
 
 import java.util.Objects;
 
@@ -14,6 +18,7 @@ import java.util.Objects;
 @Table(name = "users")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class UserEntity extends BaseEntity {
 
     @Id @GeneratedValue
@@ -21,10 +26,13 @@ public class UserEntity extends BaseEntity {
 
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String imageUrl;
 
-    public static UserEntity of(String id) {
-        return new UserEntity(id, id, null);
+    public static UserEntity of(String id, String username) {
+        return new UserEntity(id, username, Role.USER,null);
     }
 
     public void changeNickname(String nickname) {
