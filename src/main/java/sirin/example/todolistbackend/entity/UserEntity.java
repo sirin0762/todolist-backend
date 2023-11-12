@@ -1,5 +1,6 @@
 package sirin.example.todolistbackend.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,7 +22,7 @@ import java.util.Objects;
 @Getter
 public class UserEntity extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
     private String id;
 
     private String nickname;
@@ -33,6 +34,10 @@ public class UserEntity extends BaseEntity {
 
     public static UserEntity of(String id, String username) {
         return new UserEntity(id, username, Role.USER,null);
+    }
+
+    public static UserEntity of(String id, String username, String imageUrl) {
+        return new UserEntity(id, username, Role.USER,imageUrl);
     }
 
     public void changeNickname(String nickname) {

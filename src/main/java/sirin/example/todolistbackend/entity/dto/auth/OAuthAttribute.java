@@ -15,9 +15,11 @@ public class OAuthAttribute {
 
     private String nameAttributeKey;
 
-    private String id;
+    private String email;
 
     private String username;
+
+    private String picture;
 
     public static OAuthAttribute of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         return ofGoogle(userNameAttributeName, attributes);
@@ -26,12 +28,14 @@ public class OAuthAttribute {
     public static OAuthAttribute ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return new OAuthAttribute(attributes,
             userNameAttributeName,
-            (String) attributes.get("id"),
-            (String) attributes.get("username"));
+            (String) attributes.get("email"),
+            (String) attributes.get("name"),
+            (String) attributes.get("picture")
+        );
     }
 
     public UserEntity toEntity() {
-        return UserEntity.of(id, username);
+        return UserEntity.of(email, username, picture);
     }
 
 }
