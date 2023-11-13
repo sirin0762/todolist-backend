@@ -3,6 +3,7 @@ package sirin.example.todolistbackend.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,8 +26,9 @@ public class SecurityConfiguration {
         http
             .authorizeHttpRequests(
                 request -> request
-                    .requestMatchers("/h2-console/**", "/oauth2/**", "/api/**").permitAll()
-//                    .requestMatchers("/api/**").hasRole(Role.USER.name())
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
+                    .requestMatchers("/api/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
             )
             .oauth2Login(
@@ -36,6 +38,8 @@ public class SecurityConfiguration {
             )
             .csrf(AbstractHttpConfigurer::disable)
             .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+
+        http.cors(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

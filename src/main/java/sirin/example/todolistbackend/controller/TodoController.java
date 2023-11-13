@@ -3,6 +3,7 @@ package sirin.example.todolistbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import sirin.example.todolistbackend.controller.auth.LoginUser;
 import sirin.example.todolistbackend.entity.dto.TodoCreateRequest;
 import sirin.example.todolistbackend.entity.dto.TodoListOnDayResponse;
 import sirin.example.todolistbackend.entity.dto.TodoResponse;
+import sirin.example.todolistbackend.entity.dto.auth.SessionUser;
 import sirin.example.todolistbackend.entity.dto.auth.UserPrincipal;
 import sirin.example.todolistbackend.service.TodoService;
 
@@ -24,12 +27,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/todos")
 @RequiredArgsConstructor
+@CrossOrigin
 public class TodoController {
 
     private final TodoService todoService;
 
     @GetMapping
-    public ResponseEntity<List<TodoListOnDayResponse>> getTodoListOnOneDay(@RequestParam(name = "date") LocalDate date) {
+    public ResponseEntity<List<TodoListOnDayResponse>> getTodoListOnOneDay(
+        @RequestParam(name = "date") LocalDate date,
+        @LoginUser SessionUser sessionUser
+    ) {
         return ResponseEntity.ok(todoService.getTodoListOnOneDay(date));
     }
 
