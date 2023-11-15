@@ -1,7 +1,6 @@
 package sirin.example.todolistbackend.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -26,18 +25,14 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilterFilterRegistrationBean() {
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(false);
-        config.addAllowedOrigin("*");
+        config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.setMaxAge(6000L);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean<CorsFilter> filterBean = new FilterRegistrationBean<>(new CorsFilter(source));
-        filterBean.setOrder(0);
-        return filterBean;
+        return new CorsFilter(source);
     }
 
 }

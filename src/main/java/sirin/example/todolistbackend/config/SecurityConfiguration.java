@@ -28,7 +28,7 @@ public class SecurityConfiguration {
                 request -> request
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
-                    .requestMatchers("/api/**").hasRole(Role.USER.name())
+//                    .requestMatchers("/api/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
             )
             .oauth2Login(
@@ -36,8 +36,7 @@ public class SecurityConfiguration {
                     .userInfoEndpoint(endpoint -> endpoint.userService(authService))
                     .successHandler(oAuthAuthenticationSuccessHandler)
             )
-            .csrf(AbstractHttpConfigurer::disable)
-            .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+            .csrf(AbstractHttpConfigurer::disable);
 
         http.cors(AbstractHttpConfigurer::disable);
 
