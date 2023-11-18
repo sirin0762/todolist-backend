@@ -11,6 +11,8 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 import sirin.example.todolistbackend.entity.dto.auth.SessionUser;
 
 import java.io.IOException;
@@ -20,9 +22,27 @@ import java.io.IOException;
 @Slf4j
 public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final HttpSession httpSession;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        response.sendRedirect("http://localhost:5173/auth/redirect");
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        String redirectUri = createRedirectUri(user);
+        response.sendRedirect(redirectUri);
+    }
+
+    private String createRedirectUri(SessionUser user) {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+            .scheme("http")
+            .host("localhost")
+            .port(5173)
+            .path("/auth/redirect")
+            .queryParam("nickname", user.getNickname())
+            .queryParam("imageUrl", user.getImageUrl())
+            .build()
+            .encode();
+
+        return uriComponents.toString();
     }
 
 }
