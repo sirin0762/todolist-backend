@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
 
-    List<TodoEntity> findByStartDate(LocalDate startDate);
+    List<TodoEntity> findByStartDateAndUserEntity_Id(LocalDate startDate, String userId);
 
 }

@@ -3,6 +3,7 @@ package sirin.example.todolistbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import sirin.example.todolistbackend.service.TodoService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -37,15 +39,19 @@ public class TodoController {
         @RequestParam(name = "date") LocalDate date,
         @LoginUser SessionUser sessionUser
     ) {
-        return ResponseEntity.ok(todoService.getTodoListOnOneDay(date));
+        return ResponseEntity.ok(todoService.getTodoListOnOneDay(date, sessionUser));
     }
 
     @PostMapping
     public ResponseEntity<String> createTodo(
         @RequestBody TodoCreateRequest request,
-        @AuthenticationPrincipal UserPrincipal userPrincipal
-        ) {
-        Long id = todoService.createTodo(request);
+        @LoginUser SessionUser sessionUser
+    ) {
+        if (Objects.isNull(sessionUser)) {
+            // TODO: 2023-11-19 add comment when throw UserNameNotFound
+            throw new UsernameNotFoundException("");
+        }
+        Long id = todoService.createTodo(request, sessionUser);
         return ResponseEntity.ok(id.toString());
     }
 

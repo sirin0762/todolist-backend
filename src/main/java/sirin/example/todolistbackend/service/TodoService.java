@@ -1,14 +1,18 @@
 package sirin.example.todolistbackend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sirin.example.todolistbackend.entity.TodoEntity;
+import sirin.example.todolistbackend.entity.UserEntity;
 import sirin.example.todolistbackend.entity.dto.TodoCreateRequest;
 import sirin.example.todolistbackend.entity.dto.TodoListOnDayResponse;
 import sirin.example.todolistbackend.entity.dto.TodoResponse;
+import sirin.example.todolistbackend.entity.dto.auth.SessionUser;
 import sirin.example.todolistbackend.entity.type.TodoTimeOfDay;
 import sirin.example.todolistbackend.repository.TodoRepository;
+import sirin.example.todolistbackend.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -24,12 +28,14 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
 
+    private final UserRepository userRepository;
+
     @Transactional(readOnly = true)
-    public List<TodoListOnDayResponse> getTodoListOnOneDay(LocalDate date) {
+    public List<TodoListOnDayResponse> getTodoListOnOneDay(LocalDate date, SessionUser sessionUser) {
         Map<TodoTimeOfDay, List<TodoResponse>> todoMaps = Arrays.stream(TodoTimeOfDay.values())
             .collect(Collectors.toMap(
                 timeOfDay -> timeOfDay,
-                timeOfDay -> todoRepository.findByStartDate(date).stream()
+                timeOfDay -> todoRepository.findByStartDateAndUserEntity_Id(date, sessionUser.getId()).stream()
                     .map(TodoResponse::from)
                     .filter(todoResponse -> todoResponse.getTodoTimeOfDay() == timeOfDay)
                     .collect(Collectors.toList()),
@@ -44,8 +50,10 @@ public class TodoService {
     }
 
     @Transactional
-    public Long createTodo(TodoCreateRequest request) {
-        TodoEntity entity = request.toEntity();
+    public Long createTodo(TodoCreateRequest request, SessionUser sessionUser) {
+        UserEntity user = userRepository.findById(sessionUser.getId())
+            .orElseThrow(() -> new UsernameNotFoundException(""));
+        TodoEntity entity = request.toEntity(user);
         return todoRepository.save(entity).getId();
     }
 

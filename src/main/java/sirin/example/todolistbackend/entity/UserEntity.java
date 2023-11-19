@@ -37,7 +37,7 @@ public class UserEntity extends BaseEntity {
     }
 
     public static UserEntity of(String id, String username, String imageUrl) {
-        return new UserEntity(id, username, Role.USER,imageUrl);
+        return new UserEntity(id, username, Role.USER, imageUrl);
     }
 
     public void changeNickname(String nickname) {

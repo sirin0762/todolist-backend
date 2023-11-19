@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sirin.example.todolistbackend.entity.TodoEntity;
+import sirin.example.todolistbackend.entity.UserEntity;
 import sirin.example.todolistbackend.entity.type.TodoTimeOfDay;
 
 import java.time.LocalDate;
@@ -29,14 +30,15 @@ public class TodoCreateRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    public TodoEntity toEntity() {
+    public TodoEntity toEntity(UserEntity userEntity) {
         return new TodoEntity(
             this.getTitle(),
             this.getDesc(),
             this.getTodoTimeOfDay(),
             this.isDone(),
             this.getStartDate(),
-            this.getEndDate()
+            this.getEndDate(),
+            userEntity
         );
     }
 
