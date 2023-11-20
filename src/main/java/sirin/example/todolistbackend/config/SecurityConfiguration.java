@@ -8,10 +8,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import sirin.example.todolistbackend.controller.auth.OAuthAuthenticationSuccessHandler;
 import sirin.example.todolistbackend.entity.type.Role;
 import sirin.example.todolistbackend.service.AuthService;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -24,21 +29,20 @@ public class SecurityConfiguration {
     @Bean
     protected SecurityFilterChain config(HttpSecurity http) throws Exception {
         http
+            .httpBasic(HttpBasicConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
                 request -> request
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
-//                    .requestMatchers("/api/**").hasRole(Role.USER.name())
+                    .requestMatchers("/", "/h2-console/**", "/oauth2/**").permitAll()
+                    .requestMatchers("/api/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
             )
             .oauth2Login(
                 login -> login
                     .userInfoEndpoint(endpoint -> endpoint.userService(authService))
                     .successHandler(oAuthAuthenticationSuccessHandler)
-            )
-            .csrf(AbstractHttpConfigurer::disable);
-
-        http.cors(AbstractHttpConfigurer::disable);
+            );
 
         return http.build();
     }

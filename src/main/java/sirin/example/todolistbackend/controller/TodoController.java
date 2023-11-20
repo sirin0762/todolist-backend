@@ -2,7 +2,6 @@ package sirin.example.todolistbackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sirin.example.todolistbackend.controller.auth.LoginUser;
@@ -19,7 +19,6 @@ import sirin.example.todolistbackend.entity.dto.TodoCreateRequest;
 import sirin.example.todolistbackend.entity.dto.TodoListOnDayResponse;
 import sirin.example.todolistbackend.entity.dto.TodoResponse;
 import sirin.example.todolistbackend.entity.dto.auth.SessionUser;
-import sirin.example.todolistbackend.entity.dto.auth.UserPrincipal;
 import sirin.example.todolistbackend.service.TodoService;
 
 import java.time.LocalDate;
@@ -29,7 +28,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/todos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD})
 public class TodoController {
 
     private final TodoService todoService;
