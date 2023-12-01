@@ -7,16 +7,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import sirin.example.todolistbackend.controller.auth.OAuthAuthenticationSuccessHandler;
 import sirin.example.todolistbackend.entity.type.Role;
 import sirin.example.todolistbackend.service.AuthService;
-
-import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +24,7 @@ public class SecurityConfiguration {
     @Bean
     protected SecurityFilterChain config(HttpSecurity http) throws Exception {
         http
+            .cors(AbstractHttpConfigurer::disable)
             .httpBasic(HttpBasicConfigurer::disable)
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
