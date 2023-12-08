@@ -1,13 +1,24 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create
+    open-in-view: false
+    properties:
+      hibernate.default_batch_fetch_size: 100
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 
-  sql:
-    init:
-      platform: mysql
-      mode: never
+  sql.init.mode: never
 
   profiles:
     include: oauth
