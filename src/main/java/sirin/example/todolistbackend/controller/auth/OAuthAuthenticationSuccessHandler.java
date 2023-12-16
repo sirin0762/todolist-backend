@@ -34,8 +34,8 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
     private String createRedirectUri(SessionUser user) {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
             .scheme("https")
-            .host("todo-sirin.netlify.app")
-            .path("/auth/redirect")
+            .host("sirin0762.github.io")
+            .path("/todolist-frontend/auth/redirect")
             .queryParam("nickname", user.getNickname())
             .queryParam("imageUrl", user.getImageUrl())
             .build()
