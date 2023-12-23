@@ -1,6 +1,7 @@
 package sirin.example.todolistbackend.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +28,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/todos")
 @RequiredArgsConstructor
+@Slf4j
 public class TodoController {
 
     private final TodoService todoService;
@@ -36,6 +38,7 @@ public class TodoController {
         @RequestParam(name = "date") LocalDate date,
         @LoginUser SessionUser sessionUser
     ) {
+        log.info("Request time: {}", LocalDate.now());
         return ResponseEntity.ok(todoService.getTodoListOnOneDay(date, sessionUser));
     }
 
