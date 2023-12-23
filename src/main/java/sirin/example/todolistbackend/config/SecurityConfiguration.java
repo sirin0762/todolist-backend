@@ -29,8 +29,9 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
                 request -> request
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
+                    .requestMatchers("/**").permitAll()
+//                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//                    .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
 //                    .requestMatchers("/api/**").hasRole(Role.USER.name())
 //                    .anyRequest().authenticated()
             )
