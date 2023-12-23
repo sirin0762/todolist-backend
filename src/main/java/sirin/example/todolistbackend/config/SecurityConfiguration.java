@@ -35,7 +35,7 @@ public class SecurityConfiguration {
 //                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 //                    .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
 //                    .requestMatchers("/api/**").hasRole(Role.USER.name())
-//                    .anyRequest().authenticated()
+                    .anyRequest().authenticated()
             )
             .oauth2Login(
                 login -> login
