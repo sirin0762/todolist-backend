@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
+import sirin.example.todolistbackend.controller.auth.LoggingFilter;
 import sirin.example.todolistbackend.controller.auth.OAuthAuthenticationSuccessHandler;
 import sirin.example.todolistbackend.entity.type.Role;
 import sirin.example.todolistbackend.service.AuthService;
@@ -39,7 +41,8 @@ public class SecurityConfiguration {
                 login -> login
                     .userInfoEndpoint(endpoint -> endpoint.userService(authService))
                     .successHandler(oAuthAuthenticationSuccessHandler)
-            );
+            )
+            .addFilterBefore(new LoggingFilter(), SecurityContextHolderFilter.class);
 
         return http.build();
     }
