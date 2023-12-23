@@ -27,3 +27,9 @@ spring:
     include: oauth
 server:
   port: 9101
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
