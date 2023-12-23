@@ -30,9 +30,9 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(
                 request -> request
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/", "/h2-console/**", "/oauth2/**").permitAll()
-                    .requestMatchers("/api/**").hasRole(Role.USER.name())
-                    .anyRequest().authenticated()
+                    .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
+//                    .requestMatchers("/api/**").hasRole(Role.USER.name())
+//                    .anyRequest().authenticated()
             )
             .oauth2Login(
                 login -> login
