@@ -31,10 +31,9 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
                 request -> request
-//                    .requestMatchers("/**").permitAll()
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/", "/h2-console/**", "/oauth2/**", "/api/**").permitAll()
-//                    .requestMatchers("/api/**").hasRole(Role.USER.name())
+                    .requestMatchers("/", "/h2-console/**", "/oauth2/**").permitAll()
+                    .requestMatchers("/api/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
             )
             .oauth2Login(

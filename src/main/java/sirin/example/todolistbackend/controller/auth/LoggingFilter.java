@@ -20,9 +20,14 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Arrays.stream(request.getCookies()).forEach(
-            cookie -> log.info("cookie name: {}, value: {}", cookie.getName(), cookie.getValue())
-        );
+        if (request.getCookies() == null) {
+            log.info("No cookies");
+        } else {
+            Arrays.stream(request.getCookies()).forEach(
+                cookie -> log.info("cookie name: {}, value: {}", cookie.getName(), cookie.getValue())
+            );
+        }
+        
         filterChain.doFilter(request, response);
     }
 
