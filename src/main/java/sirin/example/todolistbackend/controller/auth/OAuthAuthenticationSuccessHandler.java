@@ -33,8 +33,10 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
 
     private String createRedirectUri(SessionUser user) {
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
-            .scheme("http")
-            .host("sirin-todolist.s3-website.ap-northeast-2.amazonaws.com")
+//            .scheme("http")
+//            .host("sirin-todolist.s3-website.ap-northeast-2.amazonaws.com")
+            .scheme("https")
+            .host("todolist-frontend-sirin0762.vercel.app")
             .path("/auth/redirect")
             .queryParam("nickname", user.getNickname())
             .queryParam("imageUrl", user.getImageUrl())
