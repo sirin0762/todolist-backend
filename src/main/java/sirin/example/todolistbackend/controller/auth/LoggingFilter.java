@@ -27,7 +27,7 @@ public class LoggingFilter extends OncePerRequestFilter {
                 cookie -> log.info("cookie name: {}, value: {}", cookie.getName(), cookie.getValue())
             );
         }
-        
+
         filterChain.doFilter(request, response);
     }
 
