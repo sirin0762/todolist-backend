@@ -27,6 +27,11 @@ spring:
     include: oauth
 server:
   port: 9101
+  servlet:
+    session:
+      cookie:
+        same-site: None
+        secure: true
 
 logging:
   level:
