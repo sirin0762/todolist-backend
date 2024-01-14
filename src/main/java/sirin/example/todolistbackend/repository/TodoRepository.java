@@ -10,7 +10,12 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
 
-    List<TodoEntity> findByStartDateAndUserEntity_Id(LocalDate startDate, String userId);
+    @Query(value = ""
+        + "SELECT   t FROM todos t "
+        + "WHERE    :date BETWEEN t.startDate AND t.endDate "
+        + "AND      t.userEntity.id = :userId"
+    )
+    List<TodoEntity> findByStartDateAndUserEntity_Id(LocalDate date, String userId);
 
     @Query(value = ""
         + "SELECT   t FROM todos t "
