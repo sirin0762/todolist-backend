@@ -8,6 +8,8 @@ services:
     ports:
       - "9101:9101"
     restart: always
+    networks:
+      - mysql_project-network
     depends_on:
       - mysql
 
@@ -16,11 +18,18 @@ services:
     container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
+    env_file: .env
     ports:
       - "3306:3306"
+    restart: always
     volumes:
       - mysql-data:/var/lib/mysql
-    restart: always
+    networks:
+      - mysql_project-network
 
 volumes:
   mysql-data:
+
+networks:
+  mysql_project-network:
+    external: true
