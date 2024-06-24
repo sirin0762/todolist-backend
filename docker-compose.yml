@@ -9,8 +9,8 @@ services:
       - "9101:9101"
     restart: always
     networks:
-      - mysql_project-network
+      - back-tier
 
 networks:
-  mysql_project-network:
+  back-tier:
     external: true
